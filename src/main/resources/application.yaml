@@ -1,0 +1,20 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: ${DB_USER:postgres.x}
+    password: ${DB_PASSWORD:x}
+    jdbc:
+      url: ${DB_URL:jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:5432/postgres}
+      statement-batch-size: 50
+      max-lifetime: 1800s
+
+  hibernate-orm:
+    database:
+      generation: none
+    log:
+      sql: true
+      format-sql: true
+
+technosou:
+  admin:
+    token: ${ADMIN_TOKEN:technosou-master-key-2026-super-secreta}
