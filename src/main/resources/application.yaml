@@ -1,10 +1,10 @@
 quarkus:
   datasource:
     db-kind: postgresql
-    username: ${DB_USER:postgres.x}
-    password: ${DB_PASSWORD:x}
+    username: ${DB_USER:}
+    password: ${DB_PASSWORD:}
     jdbc:
-      url: ${DB_URL:jdbc:postgresql://aws-1-us-east-2.pooler.supabase.com:5432/postgres}
+      url: ${DB_URL:}
       statement-batch-size: 50
       max-lifetime: 1800s
 
@@ -15,6 +15,16 @@ quarkus:
       sql: true
       format-sql: true
 
+  smallrye-jwt:
+    enabled: true
+
 technosou:
   admin:
-    token: ${ADMIN_TOKEN:technosou-master-key-2026-super-secreta}
+    token: ${ADMIN_TOKEN:}
+mp:
+  jwt:
+    verify:
+      publickey:
+        algorithm: ES256
+        location: ${SUPABASE_LOCATION:}
+      issuer: ${SUPABASE_ISSUER:}
