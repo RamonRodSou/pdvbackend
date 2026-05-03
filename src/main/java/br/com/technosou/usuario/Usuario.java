@@ -39,4 +39,17 @@ public class Usuario extends PanacheEntityBase {
     public static Optional<Usuario> findByIdAndTenant(UUID id, UUID tenantId) {
         return find("id = ?1 and tenantId = ?2", id, tenantId).firstResultOptional();
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", tenantId=" + tenantId +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                ", ativo=" + ativo +
+                ", dataCriacao=" + dataCriacao +
+                '}';
+    }
 }

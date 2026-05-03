@@ -2,12 +2,17 @@ package br.com.technosou.usuario;
 
 import br.com.technosou.usuario.dto.UsuarioRequest;
 import br.com.technosou.usuario.dto.UsuarioResponse;
+import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -28,14 +33,20 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponse criarUsuario(UsuarioRequest request, UUID tenantId) {
+        System.out.println("---------------------------------------------------");
+        System.out.println("teste");
+
         Usuario usuario = new Usuario();
         usuario.id = request.id();
         usuario.tenantId = tenantId;
         usuario.nome = request.nome();
         usuario.email = request.email();
-        usuario.role = request.role(); // Tipagem forte entrando em ação
+        usuario.role = request.role();
         usuario.ativo = request.ativo();
         usuario.dataCriacao = ZonedDateTime.now();
+
+        System.out.println("---------------------------------------------------");
+        System.out.println(usuario);
 
         usuario.persist();
         return mapToResponse(usuario);
@@ -66,5 +77,13 @@ public class UsuarioService {
                 usuario.id, usuario.nome, usuario.email,
                 usuario.role, usuario.ativo, usuario.dataCriacao
         );
+    }
+
+    public UUID buscarTenantPorUsuario(UUID usuarioId) {
+        Usuario usuario = Usuario.findById(usuarioId);
+        if (usuario == null) {
+            throw new NotFoundException("Usuário " + usuarioId + " não encontrado na tabela de permissões (public.usuarios).");
+        }
+        return usuario.tenantId;
     }
 }

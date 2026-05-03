@@ -24,7 +24,6 @@ public class PedidoPublicoResource {
             PedidoRequest request) {
 
         Pedido novo = pedidoService.criarPedido(request, tenantId);
-
         return Response.status(Response.Status.CREATED).entity(novo).build();
     }
 }

@@ -34,4 +34,17 @@ public class Pedido extends PanacheEntityBase {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<ItemPedido> itens;
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", tenantId=" + tenantId +
+                ", total=" + total +
+                ", status=" + status +
+                ", mesa='" + mesa + '\'' +
+                ", cliente='" + cliente + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                '}';
+    }
 }

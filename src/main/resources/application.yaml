@@ -7,16 +7,36 @@ quarkus:
       url: ${DB_URL:}
       statement-batch-size: 50
       max-lifetime: 1800s
-
+      background-validation-interval: 10m
   hibernate-orm:
     database:
       generation: none
     log:
-      sql: true
+      sql: ${HIBERNATE_LOG_SQL:false}
       format-sql: true
 
   smallrye-jwt:
     enabled: true
+
+  http:
+    proxy:
+      proxy-address-forwarding: true
+      allow-forwarded-binary-messages: true
+    cors:
+      ~: true
+      origins: "/https://.*\\.ngrok-free\\.app,https://api\\.technosou\\.com/"
+      methods: GET,POST,PUT,DELETE,OPTIONS
+      headers: Content-Type,Authorization,X-Tenant-ID
+
+  openapi:
+    info:
+      title: "PDV TechnoSou Api"
+      version: "1.0.0"
+      description: "API do Sistema de PDV para Vendedores TechnoSou"
+
+  swagger-ui:
+    always-include: ${SWAGGER_ENABLED:false}
+    path: /q/swagger-ui
 
 technosou:
   admin:
@@ -28,3 +48,4 @@ mp:
         algorithm: ES256
         location: ${SUPABASE_LOCATION:}
       issuer: ${SUPABASE_ISSUER:}
+
