@@ -9,20 +9,21 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import static br.com.technosou.tenant.mapper.TenantMapper.toResponse;
 
 @ApplicationScoped
 public class TenantService {
 
     public List<TenantResponse> listarTodos() {
         return Tenant.<Tenant>listAll().stream()
-                .map(this::mapToResponse)
+                .map(t -> toResponse(t))
                 .collect(Collectors.toList());
     }
 
     public TenantResponse buscarPorId(UUID id) {
         Tenant tenant = Tenant.<Tenant>findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException("Loja não encontrada."));
-        return mapToResponse(tenant);
+        return toResponse(tenant);
     }
 
     @Transactional
@@ -39,7 +40,7 @@ public class TenantService {
         tenant.dataCriacao = ZonedDateTime.now();
 
         tenant.persist();
-        return mapToResponse(tenant);
+        return toResponse(tenant);
     }
 
     @Transactional
@@ -52,7 +53,7 @@ public class TenantService {
         tenant.endereco = request.endereco();
         tenant.ativo = request.ativo();
 
-        return mapToResponse(tenant);
+        return toResponse(tenant);
     }
 
     @Transactional
@@ -61,12 +62,5 @@ public class TenantService {
                 .orElseThrow(() -> new NotFoundException("Loja não encontrada."));
 
         tenant.ativo = false;
-    }
-
-    private TenantResponse mapToResponse(Tenant tenant) {
-        return new TenantResponse(
-                tenant.id, tenant.nome, tenant.slug,
-                tenant.endereco, tenant.ativo, tenant.dataCriacao
-        );
     }
 }

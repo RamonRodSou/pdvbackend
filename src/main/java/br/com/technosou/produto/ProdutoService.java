@@ -11,19 +11,21 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static br.com.technosou.produto.mapper.ProdutoMapper.toResponse;
+
 @ApplicationScoped
 public class ProdutoService {
 
     public List<ProdutoResponse> listarPorTenant(UUID tenantId) {
         return Produto.listByTenant(tenantId).stream()
-                .map(this::mapToResponse)
+                .map(p -> toResponse(p))
                 .collect(Collectors.toList());
     }
 
     public ProdutoResponse buscarPorId(UUID id, UUID tenantId) {
         Produto produto = Produto.findByIdAndTenant(id, tenantId)
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado."));
-        return mapToResponse(produto);
+        return toResponse(produto);
     }
 
     @Transactional
@@ -36,7 +38,7 @@ public class ProdutoService {
         produto.ativo = request.ativo();
         produto.dataCriacao = ZonedDateTime.now();
         produto.persist();
-        return mapToResponse(produto);
+        return toResponse(produto);
     }
 
     @Transactional
@@ -48,7 +50,7 @@ public class ProdutoService {
         produto.preco = request.preco();
         produto.foto = request.foto();
         produto.ativo = request.ativo();
-        return mapToResponse(produto);
+        return toResponse(produto);
     }
 
     @Transactional
@@ -57,16 +59,5 @@ public class ProdutoService {
         if (!deletado) {
             throw new NotFoundException("Produto não encontrado ou já foi removido.");
         }
-    }
-
-    private ProdutoResponse mapToResponse(Produto produto) {
-        return new ProdutoResponse(
-                produto.id,
-                produto.produto,
-                produto.preco,
-                produto.foto,
-                produto.ativo,
-                produto.dataCriacao
-        );
     }
 }

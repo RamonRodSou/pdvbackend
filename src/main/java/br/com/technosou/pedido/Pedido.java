@@ -19,6 +19,9 @@ public class Pedido extends PanacheEntityBase {
     @Column(name = "tenant_id", nullable = false)
     public UUID tenantId;
 
+    @Column(name = "slug", nullable = false)
+    public String slug;
+
     @Column(nullable = false)
     public BigDecimal total;
 

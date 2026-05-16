@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,13 +13,13 @@ public class Tenant extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
+    public UUID id;
 
     @Column(nullable = false)
-    String nome;
+    public String nome;
 
     @Column(nullable = false)
-    String slug;
+    public String slug;
 
     public String endereco;
 
@@ -27,7 +28,7 @@ public class Tenant extends PanacheEntityBase {
     @Column(name = "data_criacao", updatable = false)
     public ZonedDateTime dataCriacao;
 
-    public static java.util.List<Tenant> listAllActive() {
+    public static List<Tenant> listAllActive() {
         return list("ativo", true);
     }
 }

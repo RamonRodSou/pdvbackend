@@ -1,29 +1,27 @@
 package br.com.technosou.pedido;
 
+import br.com.technosou.core.context.TenantContext;
 import br.com.technosou.pedido.dto.PedidoRequest;
-import jakarta.annotation.security.PermitAll;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.UUID;
-
-@Path("/v1/api/public/lojas/{tenantId}/pedidos")
+@Path("/v1/api/public/lojas/{slug}")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RequestScoped
 public class PedidoPublicoResource {
 
     @Inject
-    PedidoService pedidoService;
+    PedidoPublicoService pedidoService;
 
-    @POST
-    @PermitAll
-    public Response criarPedidoCliente(
-            @PathParam("tenantId") UUID tenantId,
-            PedidoRequest request) {
+    @Inject
+    TenantContext tenantContext;
 
-        Pedido novo = pedidoService.criarPedido(request, tenantId);
-        return Response.status(Response.Status.CREATED).entity(novo).build();
+    public Response criar(PedidoRequest request) {
+        Pedido pedido = pedidoService.criarPedido(request, tenantContext.getTenantSlug());
+        return Response.status(Response.Status.CREATED).entity(pedido).build();
     }
 }

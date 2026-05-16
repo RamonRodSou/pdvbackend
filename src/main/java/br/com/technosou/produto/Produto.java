@@ -20,6 +20,9 @@ public class Produto extends PanacheEntityBase {
     @Column(name = "tenant_id", nullable = false)
     public UUID tenantId;
 
+    @Column(name = "slug", nullable = false)
+    public String slug;
+
     @Column(nullable = false)
     public String produto;
 
@@ -37,8 +40,16 @@ public class Produto extends PanacheEntityBase {
         return find("tenantId", tenantId).list();
     }
 
+    public static List<Produto> listBySlug(String slug) {
+        return find("slug", slug).list();
+    }
+
     public static Optional<Produto> findByIdAndTenant(UUID id, UUID tenantId) {
         return find("id = ?1 and tenantId = ?2", id, tenantId).firstResultOptional();
+    }
+
+    public static Optional<Produto> findByIdAndSlug(UUID id, String slug) {
+        return find("id = ?1 and slug = ?2", id, slug).firstResultOptional();
     }
 
     public static boolean deleteByIdAndTenant(UUID id, UUID tenantId) {
