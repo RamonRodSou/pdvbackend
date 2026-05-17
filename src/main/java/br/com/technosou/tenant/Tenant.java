@@ -23,10 +23,18 @@ public class Tenant extends PanacheEntityBase {
 
     public String endereco;
 
-    public boolean ativo = true;
+    public String logo;
+
+    @Column(name = "cor_principal")
+    public String corPrincipal;
+
+    @Column(name = "cor_secundaria")
+    public String corSecundaria;
 
     @Column(name = "data_criacao", updatable = false)
     public ZonedDateTime dataCriacao;
+
+    public boolean ativo = true;
 
     public static List<Tenant> listAllActive() {
         return list("ativo", true);

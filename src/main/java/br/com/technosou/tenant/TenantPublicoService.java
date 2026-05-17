@@ -15,7 +15,14 @@ public class TenantPublicoService {
     }
 
     private TenantPublicoResponse response (Tenant tenant) {
-        return new TenantPublicoResponse(tenant.nome, tenant.slug, tenant.endereco);
+        return new TenantPublicoResponse(
+                tenant.nome,
+                tenant.slug,
+                tenant.endereco,
+                tenant.logo,
+                tenant.corPrincipal,
+                tenant.corSecundaria
+        );
     }
 
 }

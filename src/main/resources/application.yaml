@@ -35,7 +35,7 @@ quarkus:
       description: "API do Sistema de PDV para Vendedores TechnoSou"
 
   swagger-ui:
-    always-include: ${SWAGGER_ENABLED:false}
+    always-include: ${SWAGGER_ENABLED:true}
     path: /q/swagger-ui
 
 technosou:

@@ -20,10 +20,19 @@ public class ProdutoPublicoService {
     public ProdutoPublicoResponse buscarPorId(UUID id, String slug) {
         Produto produto = Produto.findByIdAndSlug(id, slug)
                 .orElseThrow(() -> new NotFoundException("Produto não encontrado."));
-        return new ProdutoPublicoResponse(slug, produto.produto, produto.preco, produto.foto);
+        return response(produto);
     }
 
     private ProdutoPublicoResponse response (Produto produto) {
-        return new ProdutoPublicoResponse(produto.slug, produto.produto, produto.preco, produto.foto);
+        return new ProdutoPublicoResponse(
+                produto.id,
+                produto.slug,
+                produto.produto,
+                produto.preco,
+                produto.foto,
+                produto.categoria,
+                produto.descricao,
+                produto.ativo
+        );
     }
 }

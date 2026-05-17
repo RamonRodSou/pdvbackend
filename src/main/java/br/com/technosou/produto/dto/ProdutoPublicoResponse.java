@@ -1,13 +1,18 @@
 package br.com.technosou.produto.dto;
 
+import br.com.technosou.produto.Categoria;
+
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public record ProdutoPublicoResponse(
+        UUID id,
         String slug,
         String produto,
         BigDecimal preco,
-        String foto
+        String foto,
+        Categoria categoria,
+        String decricao,
+        Boolean ativo
 ) {
 }

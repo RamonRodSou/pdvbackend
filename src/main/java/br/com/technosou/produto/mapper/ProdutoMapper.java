@@ -8,11 +8,13 @@ public class ProdutoMapper {
     static public ProdutoResponse toResponse(Produto produto) {
         return new ProdutoResponse(
                 produto.id,
+                produto.slug,
                 produto.produto,
                 produto.preco,
                 produto.foto,
-                produto.ativo,
-                produto.dataCriacao
+                produto.categoria,
+                produto.descricao,
+                produto.ativo
         );
     }
 }

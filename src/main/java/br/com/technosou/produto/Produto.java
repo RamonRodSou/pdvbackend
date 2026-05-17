@@ -31,6 +31,12 @@ public class Produto extends PanacheEntityBase {
 
     public String foto;
 
+    @Column(nullable = false)
+    public Categoria categoria;
+
+    @Column(length = 255)
+    public String descricao;
+
     public boolean ativo = true;
 
     @Column(name = "data_criacao", updatable = false)
