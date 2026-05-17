@@ -1,7 +1,7 @@
 package br.com.technosou.produto;
 
 import br.com.technosou.core.CrudResource;
-import br.com.technosou.core.context.TenantContext; // Nosso novo "baú" de ID
+import br.com.technosou.core.context.TenantContext;
 import br.com.technosou.produto.dto.ProdutoRequest;
 import br.com.technosou.produto.dto.ProdutoResponse;
 import jakarta.enterprise.context.RequestScoped;

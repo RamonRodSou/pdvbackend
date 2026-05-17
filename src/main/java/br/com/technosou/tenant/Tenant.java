@@ -18,7 +18,7 @@ public class Tenant extends PanacheEntityBase {
     @Column(nullable = false)
     public String nome;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     public String slug;
 
     public String endereco;

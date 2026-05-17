@@ -19,7 +19,6 @@ public class Pedido extends PanacheEntityBase {
     @Column(name = "tenant_id", nullable = false)
     public UUID tenantId;
 
-    @Column(name = "slug", nullable = false)
     public String slug;
 
     @Column(nullable = false)
@@ -32,22 +31,15 @@ public class Pedido extends PanacheEntityBase {
 
     public String cliente;
 
+    @Column(length = 11 )
+    public String telefone;
+
+    @Column(length = 255)
+    public String descricao;
+
     @Column(name = "data_criacao")
     public ZonedDateTime dataCriacao;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<ItemPedido> itens;
-
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "id=" + id +
-                ", tenantId=" + tenantId +
-                ", total=" + total +
-                ", status=" + status +
-                ", mesa='" + mesa + '\'' +
-                ", cliente='" + cliente + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                '}';
-    }
 }

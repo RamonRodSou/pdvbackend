@@ -30,9 +30,13 @@ public class ProdutoService {
 
     @Transactional
     public ProdutoResponse criarProduto(ProdutoRequest request, UUID tenantId) {
+
         Produto produto = new Produto();
         produto.tenantId = tenantId;
         produto.produto = request.produto();
+        produto.slug = request.slug();
+        produto.categoria = request.categoria();
+        produto.descricao = request.descricao();
         produto.preco = request.preco();
         produto.foto = request.foto();
         produto.ativo = request.ativo();
@@ -48,6 +52,8 @@ public class ProdutoService {
 
         produto.produto = request.produto();
         produto.preco = request.preco();
+        produto.categoria = request.categoria();
+        produto.descricao = request.descricao();
         produto.foto = request.foto();
         produto.ativo = request.ativo();
         return toResponse(produto);

@@ -20,12 +20,6 @@ public class PedidoService {
         return Pedido.find("tenantId = ?1 order by dataCriacao desc", tenantId).list();
     }
 
-    public Pedido buscarPorId(UUID id, UUID tenantId) {
-        return (Pedido) Pedido.find("id = ?1 and tenantId = ?2", id, tenantId)
-                .firstResultOptional()
-                .orElseThrow(() -> new NotFoundException("Pedido não encontrado nesta loja."));
-    }
-
     @Transactional
     public Pedido criarPedido(PedidoRequest request, UUID tenantId) {
         Pedido pedido = new Pedido();
@@ -79,5 +73,11 @@ public class PedidoService {
     public void deletarPedido(UUID id, UUID tenantId) {
         Pedido pedido = buscarPorId(id, tenantId);
         pedido.delete();
+    }
+
+    public Pedido buscarPorId(UUID id, UUID tenantId) {
+        return (Pedido) Pedido.find("id = ?1 and tenantId = ?2", id, tenantId)
+                .firstResultOptional()
+                .orElseThrow(() -> new NotFoundException("Pedido não encontrado nesta loja."));
     }
 }

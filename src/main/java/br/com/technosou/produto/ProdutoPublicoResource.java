@@ -3,14 +3,14 @@ package br.com.technosou.produto;
 import br.com.technosou.produto.dto.ProdutoPublicoResponse;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
 @Path("/v1/api/public/produtos")
+@Consumes(MediaType.APPLICATION_JSON)
 @RequestScoped
 public class ProdutoPublicoResource {
 

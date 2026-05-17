@@ -9,7 +9,6 @@ import jakarta.ws.rs.core.Response;
 
 @Path("/v1/api/public/tenant")
 @RequestScoped
-@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class TenantPublicoResource {
 

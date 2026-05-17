@@ -20,7 +20,6 @@ public class Produto extends PanacheEntityBase {
     @Column(name = "tenant_id", nullable = false)
     public UUID tenantId;
 
-    @Column(name = "slug", nullable = false)
     public String slug;
 
     @Column(nullable = false)
@@ -31,6 +30,7 @@ public class Produto extends PanacheEntityBase {
 
     public String foto;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     public Categoria categoria;
 

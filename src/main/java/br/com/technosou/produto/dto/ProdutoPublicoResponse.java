@@ -12,7 +12,7 @@ public record ProdutoPublicoResponse(
         BigDecimal preco,
         String foto,
         Categoria categoria,
-        String decricao,
+        String descricao,
         Boolean ativo
 ) {
 }

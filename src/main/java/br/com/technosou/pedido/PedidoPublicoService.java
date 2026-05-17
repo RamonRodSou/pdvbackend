@@ -3,6 +3,7 @@ package br.com.technosou.pedido;
 import br.com.technosou.pedido.dto.ItemRequest;
 import br.com.technosou.pedido.dto.PedidoRequest;
 import br.com.technosou.produto.Produto;
+import br.com.technosou.tenant.Tenant;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -10,16 +11,21 @@ import jakarta.ws.rs.NotFoundException;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 @ApplicationScoped
 public class PedidoPublicoService {
 
     @Transactional
     public Pedido criarPedido(PedidoRequest request, String slug) {
+        UUID tenantId = buscarPorTenantId(slug);
         Pedido pedido = new Pedido();
         pedido.slug = slug;
+        pedido.tenantId = tenantId;
         pedido.mesa = request.mesa();
         pedido.cliente = request.cliente();
+        pedido.telefone = request.telefone();
+        pedido.descricao = request.cliente();
         pedido.status = StatusPedido.PENDENTE;
         pedido.dataCriacao = ZonedDateTime.now();
         pedido.itens = new ArrayList<>();
@@ -44,5 +50,15 @@ public class PedidoPublicoService {
         pedido.total = totalPedido;
         pedido.persist();
         return pedido;
+    }
+
+    private UUID buscarPorTenantId(String slug) {
+        Tenant tenant = Tenant.find("slug = ?1 and ativo = ?2", slug, true).firstResult();
+
+        if (tenant == null) {
+            throw new NotFoundException("Tenant não encontrado: " + slug);
+        }
+
+        return tenant.id;
     }
 }
