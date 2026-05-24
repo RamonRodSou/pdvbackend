@@ -5,8 +5,8 @@ import br.com.technosou.produto.Categoria;
 import java.math.BigDecimal;
 
 public record ProdutoRequest(
-        String produto,
         String slug,
+        String produto,
         BigDecimal preco,
         String foto,
         Categoria categoria,

@@ -3,6 +3,7 @@ package br.com.technosou.pedido;
 import br.com.technosou.pedido.dto.ItemRequest;
 import br.com.technosou.pedido.dto.PedidoRequest;
 import br.com.technosou.produto.Produto;
+import br.com.technosou.tenant.Tenant;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -22,8 +23,21 @@ public class PedidoService {
 
     @Transactional
     public Pedido criarPedido(PedidoRequest request, UUID tenantId) {
+
         Pedido pedido = new Pedido();
         pedido.tenantId = tenantId;
+
+        if (request.slug() != null && !request.slug().isBlank()) {
+            pedido.slug = request.slug();
+        } else {
+            Tenant tenant = Tenant.findById(tenantId);
+            pedido.slug = tenant != null ? tenant.slug : null;
+        }
+
+        pedido.tenantId = tenantId;
+        pedido.slug = request.slug();
+        pedido.descricao = request.descricao();
+        pedido.telefone = request.telefone();
         pedido.mesa = request.mesa();
         pedido.cliente = request.cliente();
         pedido.status = StatusPedido.PENDENTE;

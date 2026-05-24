@@ -1,13 +1,13 @@
 package br.com.technosou.usuario;
 
+import br.com.technosou.tenant.Tenant;
+import br.com.technosou.usuario.dto.UsuarioProfileTenantDTO;
 import br.com.technosou.usuario.dto.UsuarioRequest;
 import br.com.technosou.usuario.dto.UsuarioResponse;
 import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 import java.time.ZonedDateTime;
@@ -85,5 +85,24 @@ public class UsuarioService {
             throw new NotFoundException("Usuário " + usuarioId + " não encontrado na tabela de permissões (public.usuarios).");
         }
         return usuario.tenantId;
+    }
+
+    public UsuarioProfileTenantDTO obterPerfilUsuarioPorTenant(String supabaseId) {
+        if (supabaseId == null) {
+            throw new NotAuthorizedException("Token inválido.");
+        }
+
+        Usuario usuarioLogado = Usuario.findById(UUID.fromString(supabaseId));
+
+        if (usuarioLogado == null || !usuarioLogado.ativo) {
+            throw new ForbiddenException("Usuário inativo ou não encontrado.");
+        }
+
+        Tenant tenant = Tenant.findById(usuarioLogado.tenantId);
+        if (tenant == null) {
+            throw new NotFoundException("Tenant não encontrado.");
+        }
+
+        return new UsuarioProfileTenantDTO(tenant.id, tenant.slug, tenant.nome);
     }
 }

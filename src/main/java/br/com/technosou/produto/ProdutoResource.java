@@ -4,9 +4,11 @@ import br.com.technosou.core.CrudResource;
 import br.com.technosou.core.context.TenantContext;
 import br.com.technosou.produto.dto.ProdutoRequest;
 import br.com.technosou.produto.dto.ProdutoResponse;
+import br.com.technosou.produto.dto.StatusRequest;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
@@ -42,6 +44,7 @@ public class ProdutoResource implements CrudResource<ProdutoRequest> {
 
     @Override
     public Response atualizar(UUID id, ProdutoRequest request) {
+        System.out.println(request);
         ProdutoResponse produtoAtualizado = produtoService.atualizarProduto(id, request, tenantContext.getTenantId());
         return Response.ok(produtoAtualizado).build();
     }
@@ -49,6 +52,14 @@ public class ProdutoResource implements CrudResource<ProdutoRequest> {
     @Override
     public Response deletar(UUID id) {
         produtoService.deletarProduto(id, tenantContext.getTenantId());
+        return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("/atualizar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response atualizarStatusProduto(@PathParam("id") UUID id, StatusRequest request) {
+        StatusRequest produtoAtualizado = produtoService.atualizarStatusProduto(id, request, tenantContext.getTenantId());
         return Response.noContent().build();
     }
 }

@@ -31,7 +31,7 @@ public class Pedido extends PanacheEntityBase {
 
     public String cliente;
 
-    @Column(length = 11 )
+    @Column(length = 11)
     public String telefone;
 
     @Column(length = 255)

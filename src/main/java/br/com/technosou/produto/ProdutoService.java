@@ -2,6 +2,7 @@ package br.com.technosou.produto;
 
 import br.com.technosou.produto.dto.ProdutoRequest;
 import br.com.technosou.produto.dto.ProdutoResponse;
+import br.com.technosou.produto.dto.StatusRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -33,12 +34,12 @@ public class ProdutoService {
 
         Produto produto = new Produto();
         produto.tenantId = tenantId;
-        produto.produto = request.produto();
         produto.slug = request.slug();
-        produto.categoria = request.categoria();
-        produto.descricao = request.descricao();
+        produto.produto = request.produto();
         produto.preco = request.preco();
         produto.foto = request.foto();
+        produto.categoria = request.categoria();
+        produto.descricao = request.descricao();
         produto.ativo = request.ativo();
         produto.dataCriacao = ZonedDateTime.now();
         produto.persist();
@@ -65,5 +66,16 @@ public class ProdutoService {
         if (!deletado) {
             throw new NotFoundException("Produto não encontrado ou já foi removido.");
         }
+    }
+
+    @Transactional
+    public StatusRequest atualizarStatusProduto(UUID id, StatusRequest request, UUID tenantId) {
+        Produto produto = Produto.findByIdAndTenant(id, tenantId)
+                .orElseThrow(() -> new NotFoundException("Produto não encontrado."));
+
+        System.out.println(request);
+        produto.ativo = request.ativo();
+        produto.persist();
+        return request;
     }
 }

@@ -2,6 +2,7 @@ package br.com.technosou.usuario;
 
 import br.com.technosou.core.CrudResource;
 import br.com.technosou.core.context.TenantContext;
+import br.com.technosou.usuario.dto.UsuarioProfileTenantDTO;
 import br.com.technosou.usuario.dto.UsuarioRequest;
 import br.com.technosou.usuario.dto.UsuarioResponse;
 import io.quarkus.security.Authenticated;
@@ -63,23 +64,8 @@ public class UsuarioResource implements CrudResource<UsuarioRequest> {
     @Path("/me")
     @Authenticated
     public Response obterMeuPerfil() {
-        UUID tid = getTenantIdLogado();
-        return Response.ok(Map.of("tenantId", tid)).build();
-    }
-
-    private UUID getTenantIdLogado() {
-        String supabaseId = jwt.getSubject();
-
-        if (supabaseId == null) {
-            throw new NotAuthorizedException("Token inválido ou sem identificação do usuário.");
-        }
-
-        Usuario usuarioLogado = Usuario.findById(UUID.fromString(supabaseId));
-
-        if (usuarioLogado == null || !usuarioLogado.ativo) {
-            throw new ForbiddenException("Usuário não encontrado ou inativo no sistema.");
-        }
-
-        return usuarioLogado.tenantId;
+        String id = jwt.getSubject();
+        UsuarioProfileTenantDTO profile = usuarioService.obterPerfilUsuarioPorTenant(id);
+        return Response.ok(profile).build();
     }
 }
